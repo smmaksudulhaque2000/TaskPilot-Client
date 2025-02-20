@@ -81,7 +81,6 @@ const SignUp = () => {
               photo: data.photoURL,
               phone: data.phoneNumber,
               password: data.password,
-              role: "student",
             };
             axiosPublic.post("/users", userInfo).then((res) => {
               if (res.data.insertedId) {
