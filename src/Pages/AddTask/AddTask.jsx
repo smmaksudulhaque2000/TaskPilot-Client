@@ -26,7 +26,7 @@ const AddTask = () => {
       createdAt: currentTime,
     };
 
-    axiosSecure.post("/alltask", taskData).then((res) => {
+    axiosSecure.post("/tasks", taskData).then((res) => {
       if (res.data.insertedId) {
         Swal.fire({
           icon: "success",
