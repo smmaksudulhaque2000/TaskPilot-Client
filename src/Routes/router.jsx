@@ -4,6 +4,8 @@ import Home from "../Pages/Home/Home";
 import Error from "../Pages/Shared/Error/Error";
 import SignIn from "../Pages/auth/SignIn";
 import SignUp from "../Pages/auth/SignUp";
+import AllTask from "../Pages/AllTask/AllTask";
+import AddTask from "../Pages/AddTask/AddTask";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +16,14 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+      },
+      {
+        path: "/alltask",
+        element: <AllTask></AllTask>,
+      },
+      {
+        path: "/addtask",
+        element: <AddTask></AddTask>,
       },
       {
         path: "/auth/signin",

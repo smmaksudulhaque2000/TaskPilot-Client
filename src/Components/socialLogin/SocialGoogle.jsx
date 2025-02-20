@@ -13,7 +13,6 @@ const SocialGoogle = () => {
         name: result.user?.displayName,
         email: result.user?.email,
         photo: result.user?.photoURL,
-        role: "student",
       };
       axiosPublic.post("/users", userInfo).then((res) => {
         navigate("/");

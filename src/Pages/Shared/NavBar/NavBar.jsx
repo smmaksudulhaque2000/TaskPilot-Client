@@ -85,15 +85,15 @@ const NavBar = () => {
         </NavLink>
       </li>
       <li className="text-gray-700 font-bold">
-        <NavLink to="/allclasses">
+        <NavLink to="/alltask">
           <MdOutlineClass />
-          All Classes
+          All Task
         </NavLink>
       </li>
       <li className="text-gray-700 font-bold">
-        <NavLink to="/teachon">
+        <NavLink to="/addtask">
           <FaChalkboardTeacher />
-          Teach on EduSphere
+          Add Task
         </NavLink>
       </li>
     </>
