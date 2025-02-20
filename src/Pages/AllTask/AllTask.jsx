@@ -3,13 +3,15 @@ import Loading from "../../Components/Loading";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { MdOutlineDeleteForever } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const AllTask = () => {
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
   // Fetch tasks
-  const { data: tasks, isLoading, error } = useQuery({
+  const {refetch, data: tasks, isLoading, error } = useQuery({
     queryKey: ["publicTasklist"],
     queryFn: async () => {
       const response = await axiosPublic.get("/tasks");
@@ -34,6 +36,31 @@ const AllTask = () => {
     
     // Update status in database
     updateTaskStatus.mutate({ taskId: draggableId, status: destination.droppableId });
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+            axiosPublic.delete(`/task/${id}`).then((res) => {
+            if (res.data.deletedCount > 0) {
+              refetch();
+              Swal.fire("Deleted!", "Your item has been deleted.", "success");
+            }
+          });
+        } catch (error) {
+          console.error("Error removing item:", error);
+        }
+      }
+    });
   };
 
   if (isLoading) return <Loading />;
@@ -74,9 +101,14 @@ const AllTask = () => {
                           className="bg-white p-2 mb-2 rounded shadow cursor-grab user-select-none"
                         >
                           {task.title}
+                          <button onClick={() => handleDelete(task._id)}>
+                          <MdOutlineDeleteForever className="text-3xl" />
+                          </button>
                         </div>
+                        
                       )}
                     </Draggable>
+                    
                   ))}
                   {provided.placeholder}
                 </div>
