@@ -1,15 +1,17 @@
 import { Helmet } from "react-helmet";
 import Loading from "../../Components/Loading";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import Swal from "sweetalert2";
 import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AllTask = () => {
-  const axiosPublic = useAxiosPublic();
+
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
@@ -23,7 +25,7 @@ const AllTask = () => {
   const { refetch, data: tasks, isLoading, error } = useQuery({
     queryKey: ["publicTasklist"],
     queryFn: async () => {
-      const response = await axiosPublic.get("/tasks");
+      const response = await axiosSecure.get("/tasks");
       return response.data;
     },
   });
@@ -31,7 +33,7 @@ const AllTask = () => {
   // Update task status
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }) => {
-      await axiosPublic.patch(`/tasks/${taskId}`, { status });
+      await axiosSecure.patch(`/tasks/${taskId}`, { status });
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["publicTasklist"]);
@@ -59,7 +61,7 @@ const AllTask = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          axiosPublic.delete(`/task/${id}`).then((res) => {
+          axiosSecure.delete(`/task/${id}`).then((res) => {
             if (res.data.deletedCount > 0) {
               refetch();
               Swal.fire("Deleted!", "Your item has been deleted.", "success");
@@ -93,7 +95,7 @@ const AllTask = () => {
   const handleUpdateTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosPublic.patch(`/task/${currentTask._id}`, formData);
+      const response = await axiosSecure.patch(`/task/${currentTask._id}`, formData);
       console.log("Update response:", response.data);
       console.log("Update response:", formData);
       refetch();

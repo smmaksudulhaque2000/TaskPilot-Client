@@ -6,6 +6,7 @@ import SignIn from "../Pages/auth/SignIn";
 import SignUp from "../Pages/auth/SignUp";
 import AllTask from "../Pages/AllTask/AllTask";
 import AddTask from "../Pages/AddTask/AddTask";
+import PrivateRouter from "./PrivateRouter";
 
 export const router = createBrowserRouter([
   {
@@ -19,11 +20,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/alltasks",
-        element: <AllTask></AllTask>,
+        element: (
+          <PrivateRouter>
+            <AllTask></AllTask>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/addtask",
-        element: <AddTask></AddTask>,
+        element: (
+          <PrivateRouter>
+            <AddTask></AddTask>
+          </PrivateRouter>
+        ),
       },
       {
         path: "/auth/signin",
