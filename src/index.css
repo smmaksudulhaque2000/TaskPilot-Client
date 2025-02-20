@@ -1,0 +1,6 @@
+@theme {
+  --font-display: "Satoshi", "sans-serif";
+}
+@import "tailwindcss";
+@import "tailwindcss";
+@plugin "daisyui";
