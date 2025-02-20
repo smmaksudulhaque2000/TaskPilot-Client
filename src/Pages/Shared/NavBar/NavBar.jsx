@@ -85,12 +85,6 @@ const NavBar = () => {
         </NavLink>
       </li>
       <li className="text-gray-700 font-bold">
-        <NavLink to="/tasks">
-          <MdOutlineClass />
-          Task
-        </NavLink>
-      </li>
-      <li className="text-gray-700 font-bold">
         <NavLink to="/alltasks">
           <MdOutlineClass />
           All Task

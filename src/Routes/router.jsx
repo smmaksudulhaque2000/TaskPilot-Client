@@ -6,7 +6,6 @@ import SignIn from "../Pages/auth/SignIn";
 import SignUp from "../Pages/auth/SignUp";
 import AllTask from "../Pages/AllTask/AllTask";
 import AddTask from "../Pages/AddTask/AddTask";
-import Tasks from "../Pages/Tasks/Tasks";
 
 export const router = createBrowserRouter([
   {
@@ -17,10 +16,6 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-      },
-      {
-        path: "/tasks",
-        element: <Tasks></Tasks>
       },
       {
         path: "/alltasks",

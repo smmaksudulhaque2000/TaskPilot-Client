@@ -8,11 +8,8 @@ const AllTask = () => {
   const axiosPublic = useAxiosPublic();
   const queryClient = useQueryClient();
 
-  const {
-    data: tasks,
-    isLoading,
-    error,
-  } = useQuery({
+  // Fetch tasks
+  const { data: tasks, isLoading, error } = useQuery({
     queryKey: ["publicTasklist"],
     queryFn: async () => {
       const response = await axiosPublic.get("/tasks");
@@ -20,44 +17,34 @@ const AllTask = () => {
     },
   });
 
+  // Update task status
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }) => {
-      const response = await axiosPublic.patch(`/tasks/${taskId}`, { status });
-      return response.data;
+      await axiosPublic.patch(`/tasks/${taskId}`, { status });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries("publicTasklist");
+      queryClient.invalidateQueries(["publicTasklist"]);
     },
   });
 
+  // Handle drag and drop
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-
-    if (!destination) return;
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const newStatus = destination.droppableId;
-    updateTaskStatus.mutate({ id: draggableId, status: newStatus });
+    if (!destination || destination.droppableId === source.droppableId) return;
+    
+    // Update status in database
+    updateTaskStatus.mutate({ taskId: draggableId, status: destination.droppableId });
   };
 
-  if (isLoading) return <Loading></Loading>;
+  if (isLoading) return <Loading />;
+  if (error) return <div className="text-center text-red-500 text-2xl">Error fetching tasks</div>;
 
-  if (error)
-    return (
-      <div className="text-center text-red-500 text-2xl">
-        Error fetching tasks
-      </div>
-    );
-
-  const todoTasks = tasks.filter((task) => task.status === "To-Do");
-  const inProgressTasks = tasks.filter((task) => task.status === "In Progress");
-  const doneTasks = tasks.filter((task) => task.status === "Done");
+  // Categorize tasks
+  const taskCategories = {
+    "To-Do": tasks.filter((task) => task.status === "To-Do"),
+    "In Progress": tasks.filter((task) => task.status === "In Progress"),
+    "Done": tasks.filter((task) => task.status === "Done"),
+  };
 
   return (
     <div>
@@ -68,86 +55,34 @@ const AllTask = () => {
 
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex justify-between gap-4 p-4">
-          <Droppable droppableId="To-Do" isDropDisabled={false}>
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="flex-1 bg-gray-100 p-4 rounded-lg"
-              >
-                <h2 className="text-xl font-bold mb-4">To-Do</h2>
-                {todoTasks.map((task, index) => (
-                  <Draggable key={task._id} draggableId={task._id} index={index} isDragDisabled={false}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="bg-white p-2 mb-2 rounded shadow"
-                      >
-                        {task.title}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-
-          <Droppable droppableId="In Progress" isDropDisabled={false}>
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="flex-1 bg-gray-100 p-4 rounded-lg"
-              >
-                <h2 className="text-xl font-bold mb-4">In Progress</h2>
-                {inProgressTasks.map((task, index) => (
-                  <Draggable key={task._id} draggableId={task._id} index={index} isDragDisabled={false}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="bg-white p-2 mb-2 rounded shadow"
-                      >
-                        {task.title}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-
-          <Droppable droppableId="Done" isDropDisabled={false}>
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="flex-1 bg-gray-100 p-4 rounded-lg"
-              >
-                <h2 className="text-xl font-bold mb-4">Done</h2>
-                {doneTasks.map((task, index) => (
-                  <Draggable key={task._id} draggableId={task._id} index={index} isDragDisabled={false}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className="bg-white p-2 mb-2 rounded shadow"
-                      >
-                        {task.title}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          {Object.entries(taskCategories).map(([status, tasks]) => (
+            <Droppable key={status} droppableId={status}>
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="flex-1 bg-gray-100 p-4 rounded-lg min-h-[100px]"
+                >
+                  <h2 className="text-xl font-bold mb-4">{status}</h2>
+                  {tasks.map((task, index) => (
+                    <Draggable key={task._id} draggableId={task._id} index={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="bg-white p-2 mb-2 rounded shadow cursor-grab user-select-none"
+                        >
+                          {task.title}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))}
         </div>
       </DragDropContext>
     </div>

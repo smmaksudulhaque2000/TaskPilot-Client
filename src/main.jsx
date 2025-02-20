@@ -10,14 +10,15 @@ import { ToastContainer } from "react-toastify";
 // Create a client
 const queryClient = new QueryClient();
 
-
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
+  <div>
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
     </AuthProvider>
     <ToastContainer />
-  </StrictMode>
+  </div>
+  //  </StrictMode>
 );
