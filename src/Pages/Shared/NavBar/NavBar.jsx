@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import { SiSemanticscholar } from "react-icons/si";
 import { AuthContext } from "../../../providers/AuthProvider";
 import Swal from "sweetalert2";
+import { SiTask } from "react-icons/si";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -54,11 +55,6 @@ const NavBar = () => {
 
   const dropdownLinks = (
     <>
-      {user && user.email ? (
-        <p className="text-center">{user.displayName}</p>
-      ) : (
-        <p className="text-center">Guest</p>
-      )}
       <li className="text-gray-700 font-bold">
         <NavLink to="/dashboard">
           <FaChalkboardTeacher />
@@ -100,24 +96,14 @@ const NavBar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 lg:px-10 justify-between">
+    <div className="navbar sticky top-0 z-50 px-5 lg:px-10 justify-between bg-gradient-to-r from-gray-200 to-gray-400 shadow-md">
       <div className="flex items-center">
         <Link
           to="/"
           className="text-xl lg:text-2xl font-bold flex gap-2 justify-center items-center"
         >
-          <SiSemanticscholar /> EduSphere
+          <SiTask /> TaskPailot
         </Link>
-        <div className="lg:hidden ml-4">
-          <button className="text-2xl m-2 z-50" onClick={handleDropdownToggle}>
-            <MdMenu />
-          </button>
-          {isDropdownOpen && (
-            <ul className="menu menu-vertical p-2 shadow bg-base-100 rounded-box mt-2 w-52">
-              {mainLinks}
-            </ul>
-          )}
-        </div>
       </div>
 
       <div
@@ -159,6 +145,7 @@ const NavBar = () => {
               tabIndex={0}
               className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
             >
+              <div className="lg:hidden flex-col">{mainLinks}</div>
               {dropdownLinks}
             </ul>
           </div>

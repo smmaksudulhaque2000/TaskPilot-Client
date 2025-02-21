@@ -116,6 +116,12 @@ const AllTask = () => {
     "Done": tasks.filter((task) => task.status === "Done"),
   };
 
+  const getDeadlineColor = (deadline) => {
+    const today = new Date();
+    const taskDeadline = new Date(deadline);
+    return taskDeadline < today ? "text-red-500" : "text-green-500";
+  };
+
   return (
     <div>
       <Helmet>
@@ -144,6 +150,7 @@ const AllTask = () => {
                           className="bg-white p-2 mb-2 rounded shadow cursor-grab user-select-none"
                         >
                           {task.title}
+                          <span className={getDeadlineColor(task.deadline)}>{task.deadline}</span>
                           <div className="flex justify-between">
                             <button onClick={() => handleDelete(task._id)}>
                               <MdOutlineDeleteForever className="text-3xl" />
@@ -204,6 +211,14 @@ const AllTask = () => {
                   <option value="In Progress">In Progress</option>
                   <option value="Done">Done</option>
                 </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">Deadline</label>
+                <input
+                  type="date"
+                  defaultValue={currentTask.deadline}
+                  className="w-full p-2 border rounded bg-gray-100"
+                />
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">Created At</label>

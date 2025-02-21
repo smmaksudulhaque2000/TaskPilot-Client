@@ -33,11 +33,12 @@ const AddTask = () => {
           title: "Request Successful",
           text: "Your Task has been Added successfully!",
         });
-        navigate("/alltask");
+        navigate("/alltasks");
         reset({
           title: "",
           description: "",
           status: "To-Do",
+          deadline: "",
         });
       }
     });
@@ -89,6 +90,19 @@ const AddTask = () => {
             <option value="Done">Done</option>
           </select>
           {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="deadline" className="block text-lg font-medium text-gray-700">
+            Deadline
+          </label>
+          <input
+            id="deadline"
+            type="date"
+            {...register("deadline", { required: "Deadline is required" })}
+            className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-lg"
+          />
+          {errors.deadline && <p className="text-red-500 text-sm">{errors.deadline.message}</p>}
         </div>
 
         <div>
