@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import Swal from "sweetalert2";
 import { FaEdit, FaRegEye } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
 import { useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -167,69 +168,73 @@ const AllTask = () => {
                   className="flex-1 bg-gray-100 p-4 rounded-lg min-h-screen"
                 >
                   <h2 className="text-xl font-bold mb-4">{status}</h2>
-                  {tasks.map((task, index) => (
-                    <Draggable
-                      key={task._id}
-                      draggableId={task._id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="bg-white p-4 mb-2 rounded shadow cursor-grab user-select-none"
-                        >
-                          <div className="flex flex-col">
-                            <span className="font-bold text-xl">{task.title}</span>
-                            <div className="flex justify-between items-center">
-                              <div className="flex flex-col">
-                                <span className="text-gray-600 py-2">{task.description}</span>
-                                <span className="text-gray-600 font-semibold">
-                                  {new Date(task.createdAt).toLocaleDateString(
-                                    "en-US",
-                                    {
-                                      weekday: "long",
-                                      year: "numeric",
-                                      month: "long",
-                                      day: "numeric",
-                                    }
-                                  )}{" "}
-                                  at{" "}
-                                  {new Date(task.createdAt).toLocaleTimeString(
-                                    "en-US",
-                                    {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                      second: "2-digit",
-                                    }
-                                  )}
-                                </span>
-                              </div>
-                              <div className="bg-gray-100 p-2 rounded font-bold">
-                                <span
-                                  className={getDeadlineColor(task.deadline)}
-                                >
-                                  {task.deadline}
-                                </span>
+                  {tasks.length === 0 ? (
+                    <p className="text-2xl text-red-400 font-bold">No Task in This Section...!</p>
+                  ) : (
+                    tasks.map((task, index) => (
+                      <Draggable
+                        key={task._id}
+                        draggableId={task._id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="bg-white p-4 mb-2 rounded shadow cursor-grab user-select-none"
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-bold text-xl">{task.title}</span>
+                              <div className="flex justify-between items-center">
+                                <div className="flex flex-col">
+                                  <span className="text-gray-600 py-2">{task.description}</span>
+                                  <span className="text-gray-600 font-semibold">
+                                    {new Date(task.createdAt).toLocaleDateString(
+                                      "en-US",
+                                      {
+                                        weekday: "long",
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                      }
+                                    )}{" "}
+                                    at{" "}
+                                    {new Date(task.createdAt).toLocaleTimeString(
+                                      "en-US",
+                                      {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        second: "2-digit",
+                                      }
+                                    )}
+                                  </span>
+                                </div>
+                                <div className="bg-gray-100 p-2 rounded font-bold">
+                                  <span
+                                    className={getDeadlineColor(task.deadline)}
+                                  >
+                                    {task.deadline}
+                                  </span>
+                                </div>
                               </div>
                             </div>
+                            <div className="flex justify-between p-4">
+                              <button onClick={() => handleEdit(task)}>
+                                <FaEdit className="text-2xl text-gray-600"/>
+                              </button>
+                              <button onClick={() => handleDetails(task)}>
+                              <FaRegEye className="text-2xl" />
+                              </button>
+                              <button onClick={() => handleDelete(task._id)}>
+                                <MdOutlineDeleteForever className="text-3xl text-red-600" />
+                              </button>
+                            </div>
                           </div>
-                          <div className="flex justify-between p-4">
-                            <button onClick={() => handleEdit(task)}>
-                              <FaEdit className="text-2xl text-gray-600"/>
-                            </button>
-                            <button onClick={() => handleDetails(task)}>
-                            <FaRegEye className="text-2xl" />
-                            </button>
-                            <button onClick={() => handleDelete(task._id)}>
-                              <MdOutlineDeleteForever className="text-3xl text-red-600" />
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                        )}
+                      </Draggable>
+                    ))
+                  )}
                   {provided.placeholder}
                 </div>
               )}
@@ -343,7 +348,12 @@ const AllTask = () => {
       {isMOpen && currentTask && (
         <div className="fixed inset-0 bg-gray-200 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-full max-w-4xl">
-            <h2 className="text-xl font-bold mb-4">Edit Task</h2>
+            <div className="flex justify-between items-center">
+            <h2 className="text-xl font-bold mb-4">Details Task</h2>
+            <button onClick={() => setIsMOpen(false)}>
+            <ImCross className="text-red-500 text-xl" />
+            </button>
+            </div>
             <form onSubmit={handleUpdateTask}>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">Title</label>
