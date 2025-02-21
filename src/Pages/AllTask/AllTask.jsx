@@ -23,6 +23,7 @@ const AllTask = () => {
     description: "",
     status: "",
   });
+console.log(user);
 
   // Fetch tasks
   const {
