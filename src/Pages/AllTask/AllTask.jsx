@@ -206,11 +206,11 @@ const AllTask = () => {
                             </div>
                           </div>
                           <div className="flex justify-between p-4">
-                            <button onClick={() => handleDelete(task._id)}>
-                              <MdOutlineDeleteForever className="text-3xl" />
-                            </button>
                             <button onClick={() => handleEdit(task)}>
-                              <FaEdit className="text-2xl" />
+                              <FaEdit className="text-2xl text-gray-600"/>
+                            </button>
+                            <button onClick={() => handleDelete(task._id)}>
+                              <MdOutlineDeleteForever className="text-3xl text-red-600" />
                             </button>
                           </div>
                         </div>

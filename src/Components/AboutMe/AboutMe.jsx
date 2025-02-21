@@ -8,7 +8,7 @@ const AboutMe = () => {
       className="py-16"
     >
       <motion.h3
-        className="text-4xl md:text-5xl font-bold text-center mb-8"
+        className="text-4xl font-bold text-center mb-8"
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

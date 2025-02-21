@@ -213,7 +213,7 @@ const SignUp = () => {
               <button
                 type="button"
                 onClick={handleReloadCaptcha}
-                className={`w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition ${
+                className={`w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition ${
                   captchaValid ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={captchaValid}
@@ -234,7 +234,7 @@ const SignUp = () => {
             </div>
             <button
               type="submit"
-              className={`w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition ${
+              className={`w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition ${
                 captchaValid ? "" : "cursor-not-allowed opacity-50"
               }`}
               disabled={!captchaValid}

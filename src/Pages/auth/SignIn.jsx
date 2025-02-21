@@ -184,7 +184,7 @@ const SignIn = () => {
                 className={`w-full py-3 mt-4 font-semibold rounded-md transition-colors duration-300 
                                 ${
                                   captchaValid
-                                    ? "bg-blue-500 text-white hover:bg-blue-600"
+                                    ? "bg-gray-600 text-white hover:bg-gray-800"
                                     : "bg-gray-400 text-gray-700 cursor-not-allowed"
                                 }`}
                 disabled={!captchaValid}
