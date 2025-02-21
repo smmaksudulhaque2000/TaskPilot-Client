@@ -23,9 +23,8 @@ const AllTask = () => {
     description: "",
     status: "",
   });
-console.log(user);
 
-  // Fetch tasks
+
   const {
     refetch,
     data: tasks,
@@ -39,7 +38,7 @@ console.log(user);
     },
   });
 
-  // Update task status
+
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }) => {
       await axiosSecure.patch(`/tasks/${taskId}`, { status });
@@ -49,7 +48,7 @@ console.log(user);
     },
   });
 
-  // Handle drag and drop
+
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
     if (!destination || destination.droppableId === source.droppableId) return;
@@ -117,8 +116,6 @@ console.log(user);
         `/task/${currentTask._id}`,
         formData
       );
-      console.log("Update response:", response.data);
-      console.log("Update response:", formData);
       refetch();
       setIsModalOpen(false);
       Swal.fire("Updated!", "Your task has been updated.", "success");
