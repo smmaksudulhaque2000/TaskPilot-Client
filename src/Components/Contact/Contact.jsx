@@ -44,7 +44,7 @@ const Contact = () => {
   return (
     <motion.div
       id="contact"
-      className="py-16 px-8 md:px-24 bg-gradient-to-r from-gray-900 via-gray-800 to-black text-white"
+      className="py-16 px-8 md:px-24 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-400 text-white"
       initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -56,7 +56,7 @@ const Contact = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        Contact Me
+        <p className="text-black">Contact Us</p>
       </motion.h3>
 
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 bg-gray-800 p-8 rounded-xl shadow-xl">
@@ -119,7 +119,7 @@ const Contact = () => {
           ></textarea>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded-lg flex items-center justify-center text-lg hover:bg-blue-600 transition"
+            className="w-full btn-outline border-2 border-b-4 p-3 rounded-lg flex items-center justify-center text-lg -blue-600 transition"
             disabled={loading}
           >
             {loading ? "Sending..." : "Send Message"}{" "}

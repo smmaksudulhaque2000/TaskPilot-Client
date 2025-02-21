@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://i.ibb.co.com/JWs3Hfwp/Screenshot-5.png" height="400" width="800" alt="TaskPailot"/>
+  <img src="https://i.ibb.co.com/N6cRP87N/Screenshot-1.png" height="400" width="800" alt="TaskPailot"/>
 </div>
 
 # Task Management Application (TaskPailot)

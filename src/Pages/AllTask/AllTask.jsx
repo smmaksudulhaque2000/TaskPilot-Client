@@ -10,7 +10,6 @@ import { useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AllTask = () => {
-
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +21,12 @@ const AllTask = () => {
   });
 
   // Fetch tasks
-  const { refetch, data: tasks, isLoading, error } = useQuery({
+  const {
+    refetch,
+    data: tasks,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["publicTasklist"],
     queryFn: async () => {
       const response = await axiosSecure.get("/tasks");
@@ -46,7 +50,10 @@ const AllTask = () => {
     if (!destination || destination.droppableId === source.droppableId) return;
 
     // Update status in database
-    updateTaskStatus.mutate({ taskId: draggableId, status: destination.droppableId });
+    updateTaskStatus.mutate({
+      taskId: draggableId,
+      status: destination.droppableId,
+    });
   };
 
   const handleDelete = (id) => {
@@ -95,7 +102,10 @@ const AllTask = () => {
   const handleUpdateTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosSecure.patch(`/task/${currentTask._id}`, formData);
+      const response = await axiosSecure.patch(
+        `/task/${currentTask._id}`,
+        formData
+      );
       console.log("Update response:", response.data);
       console.log("Update response:", formData);
       refetch();
@@ -107,13 +117,18 @@ const AllTask = () => {
   };
 
   if (isLoading) return <Loading />;
-  if (error) return <div className="text-center text-red-500 text-2xl">Error fetching tasks</div>;
+  if (error)
+    return (
+      <div className="text-center text-red-500 text-2xl">
+        Error fetching tasks
+      </div>
+    );
 
   // Categorize tasks
   const taskCategories = {
     "To-Do": tasks.filter((task) => task.status === "To-Do"),
     "In Progress": tasks.filter((task) => task.status === "In Progress"),
-    "Done": tasks.filter((task) => task.status === "Done"),
+    Done: tasks.filter((task) => task.status === "Done"),
   };
 
   const getDeadlineColor = (deadline) => {
@@ -128,35 +143,74 @@ const AllTask = () => {
         <meta charSet="utf-8" />
         <title>TaskPilot | All Task</title>
       </Helmet>
-
+      <h3 className="text-3xl font-bold text-center py-4">
+        Manage Your Tasks Here
+      </h3>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex justify-between gap-4 p-4">
+        <div className="flex flex-col lg:flex-row gap-4 p-4">
           {Object.entries(taskCategories).map(([status, tasks]) => (
             <Droppable key={status} droppableId={status}>
               {(provided) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className="flex-1 bg-gray-100 p-4 rounded-lg min-h-[100px]"
+                  className="flex-1 bg-gray-100 p-4 rounded-lg min-h-screen"
                 >
                   <h2 className="text-xl font-bold mb-4">{status}</h2>
                   {tasks.map((task, index) => (
-                    <Draggable key={task._id} draggableId={task._id} index={index}>
+                    <Draggable
+                      key={task._id}
+                      draggableId={task._id}
+                      index={index}
+                    >
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className="bg-white p-2 mb-2 rounded shadow cursor-grab user-select-none"
+                          className="bg-white p-4 mb-2 rounded shadow cursor-grab user-select-none"
                         >
-                          {task.title}
-                          <span className={getDeadlineColor(task.deadline)}>{task.deadline}</span>
-                          <div className="flex justify-between">
+                          <div className="flex flex-col">
+                            <span className="font-bold">{task.title}</span>
+                            <div className="flex justify-between items-center">
+                              <div className="flex flex-col">
+                                <span>{task.description}</span>
+                                <span>
+                                  {new Date(task.createdAt).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                      weekday: "long",
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    }
+                                  )}{" "}
+                                  at{" "}
+                                  {new Date(task.createdAt).toLocaleTimeString(
+                                    "en-US",
+                                    {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      second: "2-digit",
+                                    }
+                                  )}
+                                </span>
+                              </div>
+                              <div className="bg-gray-100 p-2 rounded font-bold">
+                                <span
+                                  className={getDeadlineColor(task.deadline)}
+                                >
+                                  {task.deadline}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-between p-4">
                             <button onClick={() => handleDelete(task._id)}>
                               <MdOutlineDeleteForever className="text-3xl" />
                             </button>
                             <button onClick={() => handleEdit(task)}>
-                              <FaEdit className="text-3xl" />
+                              <FaEdit className="text-2xl" />
                             </button>
                           </div>
                         </div>
@@ -173,8 +227,8 @@ const AllTask = () => {
 
       {/* Edit Task Modal */}
       {isModalOpen && currentTask && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-full max-w-md">
+        <div className="fixed inset-0 bg-gray-200 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg w-full max-w-4xl">
             <h2 className="text-xl font-bold mb-4">Edit Task</h2>
             <form onSubmit={handleUpdateTask}>
               <div className="mb-4">
@@ -186,16 +240,20 @@ const AllTask = () => {
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
                   required
+                  maxLength="50"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Description</label>
+                <label className="block text-sm font-medium mb-2">
+                  Description
+                </label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded"
                   required
+                  maxLength="200"
                 />
               </div>
               <div className="mb-4">
@@ -213,7 +271,9 @@ const AllTask = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Deadline</label>
+                <label className="block text-sm font-medium mb-2">
+                  Deadline
+                </label>
                 <input
                   type="date"
                   defaultValue={currentTask.deadline}
@@ -221,7 +281,9 @@ const AllTask = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Created At</label>
+                <label className="block text-sm font-medium mb-2">
+                  Created At
+                </label>
                 <input
                   type="text"
                   defaultValue={currentTask.createdAt}
@@ -257,7 +319,7 @@ const AllTask = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  className="btn-outline border-2 border-b-4 px-4 rounded-lg hover:bg-gray-400"
                 >
                   Update
                 </button>

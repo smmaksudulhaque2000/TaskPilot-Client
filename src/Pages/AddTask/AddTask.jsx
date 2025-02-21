@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { FiSend } from "react-icons/fi";
+import SectionTitle from "../../Components/SectionTitle";
 
 const AddTask = () => {
   const { user } = useAuth();
@@ -45,11 +46,12 @@ const AddTask = () => {
   };
 
   return (
-    <div>
+    <div className="p-4">
       <Helmet>
         <meta charSet="utf-8" />
         <title>EduSphere | Add Class</title>
       </Helmet>
+      <h3 className="text-center font-bold text-3xl">Add New Task</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <label htmlFor="title" className="block text-lg font-medium text-gray-700">
@@ -134,9 +136,9 @@ const AddTask = () => {
         <div className="text-center">
           <button
             type="submit"
-            className="inline-flex items-center justify-center w-full px-6 py-3 text-lg font-medium text-white bg-purple-600 rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            className="inline-flex items-center justify-center w-full px-6 py-3 text-lg font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
           >
-            <FiSend className="mr-2" /> Add Class
+            <FiSend className="mr-2" /> Add Task
           </button>
         </div>
       </form>

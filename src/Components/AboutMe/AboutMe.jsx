@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { FaCode, FaDumbbell, FaBook, FaMusic } from "react-icons/fa";
+import { FaTasks, FaUsers, FaClipboardList, FaClock } from "react-icons/fa";
 
 const AboutMe = () => {
   return (
     <div
       id="about"
-      className="py-16 px-8 md:px-24 bg-gradient-to-r from-gray-800 via-gray-900 to-black text-white"
+      className="py-16"
     >
       <motion.h3
         className="text-4xl md:text-5xl font-bold text-center mb-8"
@@ -14,41 +14,30 @@ const AboutMe = () => {
         viewport={{ once: true }}
         transition={{ duration: 1 }}
       >
-        About Me
+        About Us
       </motion.h3>
 
       <div className="flex flex-col md:flex-row items-center justify-between gap-10">
         <motion.div
-          className="md:w-1/2 text-lg md:text-xl text-gray-300 leading-relaxed"
+          className="md:w-1/2 text-lg md:text-xl  leading-relaxed"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
           <p className="mb-6">
-            Hello! I'm{" "}
-            <span className="text-blue-400 font-semibold">Maksudul Haque</span>,
-            a passionate Full-Stack Web Developer with a strong interest in
-            crafting user-centric web solutions. My programming journey started
-            during my early academic years, and since then, it has been a
-            thrilling adventure of constant learning and growth.
+            Welcome to <span className="text-blue-400 font-semibold">TaskFlow</span>, 
+            your ultimate task management solution. Our platform is designed to help individuals 
+            and teams organize their work efficiently, track progress, and meet deadlines seamlessly.
           </p>
           <p className="mb-6">
-            I enjoy working on both front-end and back-end projects. I thrive on
-            building intuitive user interfaces and scalable back-end systems.
-            Creating meaningful digital experiences that can make a positive
-            impact is what excites me the most.
+            With TaskFlow, you can create, assign, and prioritize tasks effortlessly. Whether you are
+            a freelancer, a team leader, or a project manager, our intuitive interface ensures that
+            you stay on top of your workload.
           </p>
           <p className="mb-6">
-            When I'm not coding, you’ll find me exploring new technologies,
-            reading books, working out, or listening to music. I believe in
-            maintaining a balance between work and personal life, as it helps
-            fuel creativity and motivation.
-          </p>
-          <p>
-            I’m a curious and enthusiastic person who loves collaborating with
-            others and taking on new challenges. Let’s create something amazing
-            together!
+            We believe in boosting productivity through smart organization and collaboration. 
+            Stay focused, work smarter, and achieve your goals with TaskFlow!
           </p>
         </motion.div>
 
@@ -59,26 +48,26 @@ const AboutMe = () => {
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          {[
+          {[ 
             {
-              icon: <FaCode className="text-5xl text-blue-400 mb-4" />,
-              title: "Coding",
-              desc: "I love problem-solving and turning ideas into reality through code.",
+              icon: <FaTasks className="text-5xl text-blue-400 mb-4" />, 
+              title: "Task Management", 
+              desc: "Create, assign, and track tasks easily with our user-friendly interface."
             },
             {
-              icon: <FaDumbbell className="text-5xl text-green-400 mb-4" />,
-              title: "Workout",
-              desc: "Working out keeps me healthy, focused, and energized.",
+              icon: <FaUsers className="text-5xl text-green-400 mb-4" />, 
+              title: "Collaboration", 
+              desc: "Work together with your team efficiently and track collective progress."
             },
             {
-              icon: <FaBook className="text-5xl text-yellow-400 mb-4" />,
-              title: "Reading",
-              desc: "I enjoy reading books on technology, self-improvement, and fiction.",
+              icon: <FaClipboardList className="text-5xl text-yellow-400 mb-4" />, 
+              title: "Project Tracking", 
+              desc: "Monitor ongoing projects and ensure timely completion with clear milestones."
             },
             {
-              icon: <FaMusic className="text-5xl text-pink-400 mb-4" />,
-              title: "Music",
-              desc: "Music is my escape and a great source of inspiration.",
+              icon: <FaClock className="text-5xl text-pink-400 mb-4" />, 
+              title: "Time Management", 
+              desc: "Prioritize your tasks and manage deadlines effectively to stay productive."
             },
           ].map((item, index) => (
             <motion.div
